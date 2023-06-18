@@ -19,7 +19,7 @@ h1, h3{
     color: white;
     position: relative;
     transition: 500ms;
-    opacity: 1;/*must change to zero when the whole app is done*/
+     opacity: 1;
 
 }
 .weatherApp::before{
@@ -104,6 +104,7 @@ font-size: 3em;
     border-bottom: 1px #ccc solid;
     padding: 1em 2em 0.5em 1em;
     font-size: 1em;
+    color: #fff;
 }
 .search::placeholder{
  color: #ccc;
