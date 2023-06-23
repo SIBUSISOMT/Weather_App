@@ -8,7 +8,7 @@ const icon = document.querySelector('.icon');
 const cloudOutput = document.querySelector('.cloud');
 const humidityOutput= document.querySelector('.humidity');
 const windOutput = document.querySelector('.wind');
-const form = document.querySelector('.locationInput');
+const form = document.querySelector('#searchForm');
 const search = document.querySelector('#searchInput');
 const btn = document.querySelector('.submit');
 const cities = document.querySelectorAll('.city');
@@ -18,26 +18,44 @@ const submit = document.getElementById('submitButton');
 
 let cityInput = "Nelspruit";
 
-console.log(cities)
+
    cities.forEach((city) =>{
        city.addEventListener('click',(e)=>{
            cityInput = e.target.innerHTML;
-           console.log(cityInput)
+          
            fetchWeatherData(cityInput);
-           app.style.opacity = "0";
+           
        });
    });
+  
+   search.addEventListener('keyup', async (e) => {
+  
+    const searchString = e.target.value;
+ 
+    if (searchString.length) {
+      const searchUrl = `http://api.weatherapi.com/v1/current.json?key=6cbc961dc4644bc885283113231406&q=${search.value}`;
+      try {
+        
+        const response = await fetch(searchUrl);
+        const data = await response.json(); 
+        if (data.results) {
+         fetchWeatherData(data.results);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+        fetchWeatherData(cityInput);
+      }
+  });
+  
 
 submit.addEventListener('click',(e)=>{
     e.preventDefault();
     
         cityInput = search.value;
-        fetchWeatherData();
+         fetchWeatherData(cityInput);
         search.value = '';
-        // app.style.opacity= "0";
-
-    
-    
 });
 
 
@@ -55,7 +73,7 @@ function dayOfTheWeek(day, month, year)
 //   }
     const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=6cbc961dc4644bc885283113231406&q=${cityInput}`)
     const data = await response.json();
-    console.log(data);
+   
 
     temp.innerHTML = data.current.temp_c + "&#176;"
     conditionOutput.innerHTML = data.current.condition.text;
@@ -78,7 +96,7 @@ function dayOfTheWeek(day, month, year)
         timeOfDay = "night";
     }
     if(code == 1000){
-        app.style.backgroundImage = 'url(./Night-photos/${timeOfDay}/mountains.jpg)';
+        app.style.backgroundImage = `url(./Night-photos/${timeOfDay}/mountains.jpg)`;
         btn.style.background = "#e5ba92";
         if(timeOfDay == "night"){
             btn.style.background = "#181e27";
@@ -98,7 +116,7 @@ function dayOfTheWeek(day, month, year)
         code == 1282 
     );
     {
-        app.style.backgroundImage = 'url(./Night-photos/${timeOfDay}/dark clouds.jpg)';
+        app.style.backgroundImage = `url(./Night-photos/${timeOfDay}/dark clouds.jpg)`;
         btn.style.background ='#fa6d1b';
 
         if(timeOfDay == "night"){
@@ -126,24 +144,24 @@ function dayOfTheWeek(day, month, year)
             code == 1252 
         )
         {
-             app.style.backgroundImage = 'url(./Day-photos/${timeOfDay}rainy.jpg)'; 
+             app.style.backgroundImage = `url(./Day-photos/${timeOfDay}rainy.jpg)`; 
              btn.style.background = "#647d75";
              if(timeOfDay == "night"){
                 btn.style.background = "#325c80";
              }
-             else(app.style.backgroundImage = 'url(./Night-photos/${timeOfDay}snow.jpg)');
+             else(app.style.backgroundImage = `url(./Night-photos/${timeOfDay}snow.jpg)`);
              btn.style.background = "#4d72aa";
              if(timeOfDay == "night"){
                 btn.style.background = "#1b1b1b"
              }
         }
  
-      app.style.opacity = "1";
+    
 
     };
     
 } 
 fetchWeatherData(); 
-app.style.opacity = "1";
+
  
     
